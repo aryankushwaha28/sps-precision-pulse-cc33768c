@@ -40,21 +40,23 @@ const ProductsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {products.map((product, index) => (
             <Card
               key={index}
-              className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 border-border overflow-hidden"
+              className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-0 bg-card/50 backdrop-blur-sm overflow-hidden relative"
             >
-              <div className="aspect-square overflow-hidden bg-muted">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="aspect-square overflow-hidden bg-muted relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <CardHeader>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-2xl group-hover:text-primary transition-colors duration-300">
                   {product.title}
                 </CardTitle>
                 <CardDescription>{product.description}</CardDescription>

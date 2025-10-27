@@ -19,36 +19,36 @@ const Navigation = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-card">
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50 shadow-card">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center group-hover:shadow-glow transition-all duration-300">
-              <span className="text-primary-foreground font-bold text-xl">SPS</span>
+            <div className="w-14 h-14 bg-gradient-primary rounded-xl flex items-center justify-center group-hover:shadow-glow transition-all duration-500 group-hover:scale-110">
+              <span className="text-primary-foreground font-bold text-2xl">SPS</span>
             </div>
             <div className="hidden md:block">
-              <div className="font-bold text-lg text-foreground">Saraswati Pumps & Systems</div>
-              <div className="text-xs text-muted-foreground">Engineering Reliability Since 2006</div>
+              <div className="font-bold text-xl text-foreground tracking-tight">Saraswati Pumps & Systems</div>
+              <div className="text-xs text-muted-foreground font-medium">Engineering Reliability Since 2006</div>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
                   isActive(item.path)
-                    ? "bg-primary text-primary-foreground"
-                    : "text-foreground hover:bg-muted hover:text-primary"
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                    : "text-foreground hover:bg-muted/50 hover:text-primary"
                 }`}
               >
                 {item.name}
               </Link>
             ))}
-            <Button variant="hero" size="sm" asChild className="ml-4">
+            <Button variant="hero" size="lg" asChild className="ml-4 shadow-lg shadow-accent/30">
               <Link to="/contact">Request Quote</Link>
             </Button>
           </div>
