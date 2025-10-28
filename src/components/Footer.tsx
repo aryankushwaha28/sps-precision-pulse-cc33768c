@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
+import logo from "@/assets/sps-logo.jpg";
 
 const Footer = () => {
   return (
@@ -9,12 +10,8 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">SPS</span>
-              </div>
-              <div>
-                <div className="font-bold text-lg">Saraswati Pumps</div>
-                <div className="text-xs text-muted-foreground">& Systems</div>
+              <div className="h-16">
+                <img src={logo} alt="SPS Logo" className="h-full w-auto object-contain" />
               </div>
             </div>
             <p className="text-sm text-muted-foreground">

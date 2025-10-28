@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/sps-logo.jpg";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +25,8 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-14 h-14 bg-gradient-primary rounded-xl flex items-center justify-center group-hover:shadow-glow transition-all duration-500 group-hover:scale-110">
-              <span className="text-primary-foreground font-bold text-2xl">SPS</span>
+            <div className="h-16 group-hover:scale-105 transition-all duration-500">
+              <img src={logo} alt="SPS Logo" className="h-full w-auto object-contain" />
             </div>
             <div className="hidden md:block">
               <div className="font-bold text-xl text-foreground tracking-tight">Saraswati Pumps & Systems</div>
