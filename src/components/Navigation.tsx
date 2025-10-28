@@ -30,7 +30,7 @@ const Navigation = () => {
             </div>
             <div className="hidden md:block">
               <div className="font-bold text-xl text-foreground tracking-tight">Saraswati Pumps & Systems</div>
-              <div className="text-xs text-muted-foreground font-medium">Engineering Reliability Since 2006</div>
+              <div className="text-[10px] text-muted-foreground font-normal">Engineering Reliability Since 2006</div>
             </div>
           </Link>
 
