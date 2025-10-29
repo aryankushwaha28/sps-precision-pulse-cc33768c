@@ -26,28 +26,29 @@ const WhyChooseSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-secondary text-secondary-foreground">
-      <div className="container mx-auto px-4">
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            The Power of Engineering Meets Precision Manufacturing
+    <section className="py-20 bg-secondary">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="mb-16">
+          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
+            Why Choose SPS
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+            Engineering Excellence
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {reasons.map((reason, index) => (
-            <Card
+            <div
               key={index}
-              className="bg-secondary-foreground/5 border-secondary-foreground/10 hover:bg-secondary-foreground/10 transition-all duration-300 hover:-translate-y-1"
+              className="bg-card border border-border p-6 space-y-4"
             >
-              <CardContent className="p-6 space-y-4">
-                <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center">
-                  <reason.icon className="h-7 w-7 text-accent" />
-                </div>
-                <h3 className="text-xl font-semibold">{reason.title}</h3>
-                <p className="text-muted-foreground">{reason.description}</p>
-              </CardContent>
-            </Card>
+              <div className="w-12 h-12 flex items-center justify-center bg-primary/10">
+                <reason.icon className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground">{reason.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{reason.description}</p>
+            </div>
           ))}
         </div>
       </div>

@@ -3,48 +3,59 @@ import { Link } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 
 const AboutSection = () => {
-  const highlights = [
-    "ISO-grade manufacturing",
-    "In-house CNC machining",
-    "Expert service team",
-    "Proven performance across industries",
-  ];
-
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-mesh opacity-30"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto text-center space-y-8">
-          <h2 className="text-5xl md:text-6xl font-black text-foreground tracking-tight">
-            Engineering Reliability Since 2006
-          </h2>
-          
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto font-medium">
-            At Saraswati Pumps & Systems (SPS), we design and manufacture high-pressure triplex 
-            plunger pumps and precision-engineered cleaning systems for the toughest industrial 
-            environments. From CNC-machined parts to micron-level assemblies, every SPS product 
-            stands for quality, durability, and innovation.
-          </p>
+    <section className="py-20 bg-secondary">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          {/* Left: Technical Content */}
+          <div className="space-y-6">
+            <div>
+              <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
+                About SPS
+              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                Engineering Precision Since 2006
+              </h2>
+            </div>
+            
+            <div className="space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                Saraswati Pumps & Systems specializes in the design and manufacture of high-pressure 
+                triplex plunger pumps and precision cleaning systems for industrial applications.
+              </p>
+              <p>
+                Our manufacturing facility features in-house CNC machining capabilities, ensuring 
+                micron-level precision and ISO-certified quality standards across all product lines.
+              </p>
+            </div>
 
-          {/* Highlights Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-10">
-            {highlights.map((highlight, index) => (
-              <div
-                key={index}
-                className="flex items-center space-x-4 p-6 rounded-2xl bg-gradient-to-br from-card to-muted/30 border-2 border-border/50 hover:border-primary/50 hover:shadow-elegant transition-all duration-500 group backdrop-blur-sm"
-              >
-                <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                  <CheckCircle2 className="h-7 w-7 text-primary flex-shrink-0" />
-                </div>
-                <span className="text-foreground font-semibold text-lg">{highlight}</span>
-              </div>
-            ))}
+            <Button variant="outline" size="lg" asChild className="mt-6">
+              <Link to="/about">Company Profile</Link>
+            </Button>
           </div>
 
-          <div className="pt-8">
-            <Button variant="default" size="lg" asChild>
-              <Link to="/about">Know More About Us</Link>
-            </Button>
+          {/* Right: Technical Specs */}
+          <div className="grid grid-cols-2 gap-6">
+            <div className="bg-card p-6 border border-border">
+              <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
+              <h3 className="font-bold text-foreground mb-2">ISO Certified</h3>
+              <p className="text-sm text-muted-foreground">Manufacturing excellence</p>
+            </div>
+            <div className="bg-card p-6 border border-border">
+              <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
+              <h3 className="font-bold text-foreground mb-2">CNC Precision</h3>
+              <p className="text-sm text-muted-foreground">In-house machining</p>
+            </div>
+            <div className="bg-card p-6 border border-border">
+              <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
+              <h3 className="font-bold text-foreground mb-2">Custom Solutions</h3>
+              <p className="text-sm text-muted-foreground">Application-specific</p>
+            </div>
+            <div className="bg-card p-6 border border-border">
+              <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
+              <h3 className="font-bold text-foreground mb-2">Service Network</h3>
+              <p className="text-sm text-muted-foreground">Technical support</p>
+            </div>
           </div>
         </div>
       </div>

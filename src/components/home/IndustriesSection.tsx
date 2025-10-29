@@ -12,40 +12,30 @@ const IndustriesSection = () => {
 
   return (
     <section className="py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-            Empowering Industries Across India
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We deliver custom-engineered solutions that enhance productivity and reliability 
-            across a wide range of industrial sectors
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="mb-16">
+          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
+            Applications
           </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+            Industries Served
+          </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {industries.map((industry, index) => (
             <div
               key={index}
-              className="group p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-card transition-all duration-300 text-center space-y-3"
+              className="group p-6 bg-card border border-border hover:border-primary transition-colors"
             >
-              <div className="flex justify-center">
-                <div className="p-4 rounded-full bg-muted group-hover:bg-primary/10 transition-colors">
-                  <industry.icon className={`h-8 w-8 ${industry.color} group-hover:scale-110 transition-transform`} />
-                </div>
+              <div className="flex items-center space-x-4">
+                <industry.icon className={`h-6 w-6 ${industry.color}`} />
+                <h3 className="font-semibold text-foreground">
+                  {industry.name}
+                </h3>
               </div>
-              <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
-                {industry.name}
-              </h3>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <p className="text-muted-foreground max-w-3xl mx-auto">
-            Our technology at work — powering India's industrial cleaning and maintenance operations 
-            with precision-engineered solutions built to last.
-          </p>
         </div>
       </div>
     </section>

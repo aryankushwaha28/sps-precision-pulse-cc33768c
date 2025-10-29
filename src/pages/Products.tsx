@@ -149,7 +149,7 @@ const Products = () => {
                     </ul>
                   </div>
 
-                  <Button variant="hero" size="lg" asChild>
+                  <Button variant="default" size="lg" asChild>
                     <Link to="/contact">Request a Quote</Link>
                   </Button>
                 </div>
