@@ -2,17 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone } from "lucide-react";
 import heroImage from "@/assets/hero-industrial.jpg";
-
 const HeroSection = () => {
-  return (
-    <section className="relative h-[85vh] flex items-center overflow-hidden bg-white">
+  return <section className="relative h-[85vh] flex items-center overflow-hidden bg-white">
       {/* Clean Background with Technical Image */}
       <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt="Industrial high-pressure pumps"
-          className="w-full h-full object-cover opacity-20"
-        />
+        <img src={heroImage} alt="Industrial high-pressure pumps" className="w-full h-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-transparent"></div>
       </div>
 
@@ -52,7 +46,7 @@ const HeroSection = () => {
           {/* Technical Specs Bar */}
           <div className="flex flex-wrap gap-8 pt-8 border-t border-border">
             <div>
-              <div className="text-3xl font-bold text-foreground">1000 bar</div>
+              <div className="text-3xl font-bold text-foreground">1500 bar</div>
               <div className="text-sm text-muted-foreground">Max Pressure</div>
             </div>
             <div>
@@ -66,8 +60,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
