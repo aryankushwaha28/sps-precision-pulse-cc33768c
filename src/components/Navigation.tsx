@@ -24,7 +24,7 @@ const Navigation = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="h-10">
               <img src={logo} alt="SPS Logo" className="h-full w-auto object-contain" />
             </div>
