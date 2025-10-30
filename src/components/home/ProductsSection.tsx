@@ -43,8 +43,8 @@ const ProductsSection = () => {
   return (
     <section className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6 lg:px-12">
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+        <div className="mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             High Pressure Solutions
           </h2>
           <p className="text-base text-muted-foreground max-w-2xl">
