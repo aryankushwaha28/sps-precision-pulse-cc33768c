@@ -3,15 +3,13 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Linkedin, Clock } from "lucide-react";
-
 const Contact = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Navigation />
       
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground">
+        <section className="py-20 bg-gradient-primary text-primary-foreground bg-neutral-700">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
               <h1 className="text-5xl md:text-6xl font-bold">Contact Us</h1>
@@ -58,10 +56,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                        <a
-                          href="mailto:sps.bsk2011@gmail.com"
-                          className="text-muted-foreground hover:text-accent transition-colors"
-                        >
+                        <a href="mailto:sps.bsk2011@gmail.com" className="text-muted-foreground hover:text-accent transition-colors">
                           sps.bsk2011@gmail.com
                         </a>
                       </div>
@@ -75,10 +70,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                        <a
-                          href="tel:+919811112086"
-                          className="text-muted-foreground hover:text-accent transition-colors"
-                        >
+                        <a href="tel:+919811112086" className="text-muted-foreground hover:text-accent transition-colors">
                           +91 9811112086
                         </a>
                       </div>
@@ -106,12 +98,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">LinkedIn</h3>
-                        <a
-                          href="https://www.linkedin.com/in/brajendra-singh-34b1b049/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-accent transition-colors"
-                        >
+                        <a href="https://www.linkedin.com/in/brajendra-singh-34b1b049/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
                           Connect with Brajendra Singh
                         </a>
                       </div>
@@ -158,8 +145,6 @@ const Contact = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;
