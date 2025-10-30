@@ -2,42 +2,27 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { CheckCircle2, Target, Eye, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
 const About = () => {
-  const values = [
-    {
-      icon: Target,
-      title: "Our Mission",
-      description: "To deliver precision-engineered pumping solutions that exceed industry standards and empower our clients' success through reliability and innovation.",
-    },
-    {
-      icon: Eye,
-      title: "Our Vision",
-      description: "To be India's most trusted name in high-pressure pumping systems, recognized for engineering excellence and unwavering commitment to quality.",
-    },
-    {
-      icon: Award,
-      title: "Quality Assurance",
-      description: "ISO-grade manufacturing processes with rigorous testing protocols ensure every product meets the highest standards of performance and durability.",
-    },
-  ];
-
-  const infrastructure = [
-    "State-of-the-art CNC machining center",
-    "Advanced pressure testing facilities",
-    "Quality control laboratory",
-    "In-house design and engineering team",
-    "Comprehensive spare parts inventory",
-    "24/7 technical support center",
-  ];
-
-  return (
-    <div className="min-h-screen">
+  const values = [{
+    icon: Target,
+    title: "Our Mission",
+    description: "To deliver precision-engineered pumping solutions that exceed industry standards and empower our clients' success through reliability and innovation."
+  }, {
+    icon: Eye,
+    title: "Our Vision",
+    description: "To be India's most trusted name in high-pressure pumping systems, recognized for engineering excellence and unwavering commitment to quality."
+  }, {
+    icon: Award,
+    title: "Quality Assurance",
+    description: "ISO-grade manufacturing processes with rigorous testing protocols ensure every product meets the highest standards of performance and durability."
+  }];
+  const infrastructure = ["State-of-the-art CNC machining center", "Advanced pressure testing facilities", "Quality control laboratory", "In-house design and engineering team", "Comprehensive spare parts inventory", "24/7 technical support center"];
+  return <div className="min-h-screen">
       <Navigation />
       
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground">
+        <section className="py-20 bg-gradient-primary text-primary-foreground bg-[#000a0e]/[0.37]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
               <h1 className="text-5xl md:text-6xl font-bold">About Saraswati Pumps & Systems</h1>
@@ -87,8 +72,7 @@ const About = () => {
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {values.map((value, index) => (
-                <Card key={index} className="hover:shadow-elegant transition-all duration-300">
+              {values.map((value, index) => <Card key={index} className="hover:shadow-elegant transition-all duration-300">
                   <CardContent className="p-8 space-y-4 text-center">
                     <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                       <value.icon className="h-8 w-8 text-primary" />
@@ -96,8 +80,7 @@ const About = () => {
                     <h3 className="text-2xl font-bold text-foreground">{value.title}</h3>
                     <p className="text-muted-foreground">{value.description}</p>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -115,15 +98,10 @@ const About = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {infrastructure.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-3 p-4 rounded-lg bg-card border border-border hover:shadow-card transition-all duration-300"
-                  >
+                {infrastructure.map((item, index) => <div key={index} className="flex items-start space-x-3 p-4 rounded-lg bg-card border border-border hover:shadow-card transition-all duration-300">
                     <CheckCircle2 className="h-6 w-6 text-accent flex-shrink-0 mt-0.5" />
                     <span className="text-foreground font-medium">{item}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
           </div>
@@ -155,8 +133,6 @@ const About = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
