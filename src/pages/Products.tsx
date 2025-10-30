@@ -7,6 +7,7 @@ import { CheckCircle2 } from "lucide-react";
 import pumpImage from "@/assets/pump-product.jpg";
 import cleaningImage from "@/assets/cleaning-accessories.jpg";
 import customImage from "@/assets/custom-system.jpg";
+import heroImage from "@/assets/hero-industrial.jpg";
 const Products = () => {
   const products = [{
     title: "High Pressure Triplex Plunger Pumps",
@@ -32,11 +33,15 @@ const Products = () => {
       
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground bg-neutral-950">
-          <div className="container mx-auto px-4">
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <img src={heroImage} alt="Industrial high-pressure pumps" className="w-full h-full object-cover opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-transparent"></div>
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
-              <h1 className="text-5xl md:text-6xl font-bold text-neutral-50">Our Products</h1>
-              <p className="text-xl opacity-90">
+              <h1 className="text-5xl md:text-6xl font-bold">Our Products</h1>
+              <p className="text-xl text-muted-foreground">
                 Precision-Engineered Solutions for Industrial Excellence
               </p>
             </div>

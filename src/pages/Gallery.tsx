@@ -37,11 +37,15 @@ const Gallery = () => {
       
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground bg-[#080701]/70">
-          <div className="container mx-auto px-4">
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <img src={heroImage} alt="Industrial high-pressure pumps" className="w-full h-full object-cover opacity-20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-transparent"></div>
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
               <h1 className="text-5xl md:text-6xl font-bold">Gallery</h1>
-              <p className="text-xl opacity-90">
+              <p className="text-xl text-muted-foreground">
                 Real Work, Real Results — Our Technology in Action
               </p>
             </div>
