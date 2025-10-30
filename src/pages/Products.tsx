@@ -35,7 +35,7 @@ const Products = () => {
         <section className="py-20 bg-gradient-primary text-primary-foreground bg-neutral-950">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
-              <h1 className="text-5xl md:text-6xl font-bold text-zinc-950">Our Products</h1>
+              <h1 className="text-5xl md:text-6xl font-bold text-neutral-50">Our Products</h1>
               <p className="text-xl opacity-90">
                 Precision-Engineered Solutions for Industrial Excellence
               </p>
