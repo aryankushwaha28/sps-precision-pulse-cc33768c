@@ -5,50 +5,39 @@ import pumpImage from "@/assets/pump-product.jpg";
 import cleaningImage from "@/assets/cleaning-accessories.jpg";
 import customImage from "@/assets/custom-system.jpg";
 import heroImage from "@/assets/hero-industrial.jpg";
-
 const Gallery = () => {
-  const galleryItems = [
-    {
-      image: pumpImage,
-      title: "High Pressure Triplex Plunger Pump",
-      category: "Products",
-    },
-    {
-      image: cleaningImage,
-      title: "Tube Cleaning Accessories",
-      category: "Products",
-    },
-    {
-      image: customImage,
-      title: "Custom Pumping System",
-      category: "Products",
-    },
-    {
-      image: heroImage,
-      title: "Manufacturing Facility",
-      category: "Infrastructure",
-    },
-    {
-      image: pumpImage,
-      title: "CNC Machined Components",
-      category: "Manufacturing",
-    },
-    {
-      image: cleaningImage,
-      title: "Quality Testing",
-      category: "Quality Assurance",
-    },
-  ];
-
+  const galleryItems = [{
+    image: pumpImage,
+    title: "High Pressure Triplex Plunger Pump",
+    category: "Products"
+  }, {
+    image: cleaningImage,
+    title: "Tube Cleaning Accessories",
+    category: "Products"
+  }, {
+    image: customImage,
+    title: "Custom Pumping System",
+    category: "Products"
+  }, {
+    image: heroImage,
+    title: "Manufacturing Facility",
+    category: "Infrastructure"
+  }, {
+    image: pumpImage,
+    title: "CNC Machined Components",
+    category: "Manufacturing"
+  }, {
+    image: cleaningImage,
+    title: "Quality Testing",
+    category: "Quality Assurance"
+  }];
   const categories = ["All", "Products", "Manufacturing", "Infrastructure", "Quality Assurance"];
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Navigation />
       
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground">
+        <section className="py-20 bg-gradient-primary text-primary-foreground bg-[#080701]/70">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-6 animate-fade-in-up">
               <h1 className="text-5xl md:text-6xl font-bold">Gallery</h1>
@@ -64,33 +53,16 @@ const Gallery = () => {
           <div className="container mx-auto px-4">
             {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-4 mb-12">
-              {categories.map((category, index) => (
-                <button
-                  key={index}
-                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                    index === 0
-                      ? "bg-primary text-primary-foreground shadow-glow"
-                      : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                  }`}
-                >
+              {categories.map((category, index) => <button key={index} className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${index === 0 ? "bg-primary text-primary-foreground shadow-glow" : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"}`}>
                   {category}
-                </button>
-              ))}
+                </button>)}
             </div>
 
             {/* Gallery Items */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {galleryItems.map((item, index) => (
-                <Card
-                  key={index}
-                  className="group overflow-hidden hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 cursor-pointer"
-                >
+              {galleryItems.map((item, index) => <Card key={index} className="group overflow-hidden hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 cursor-pointer">
                   <div className="aspect-square overflow-hidden bg-muted relative">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                       <div className="text-secondary-foreground">
                         <div className="text-xs font-medium text-accent mb-1">{item.category}</div>
@@ -98,8 +70,7 @@ const Gallery = () => {
                       </div>
                     </div>
                   </div>
-                </Card>
-              ))}
+                </Card>)}
             </div>
 
             {/* Video Section */}
@@ -133,8 +104,6 @@ const Gallery = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Gallery;
