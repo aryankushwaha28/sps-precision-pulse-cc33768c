@@ -5,6 +5,7 @@ import pumpImage from "@/assets/pump-product.jpg";
 import cleaningImage from "@/assets/cleaning-accessories.jpg";
 import customImage from "@/assets/custom-system.jpg";
 import heroImage from "@/assets/hero-industrial.jpg";
+import cylinderSleevesImage from "@/assets/cylinder-sleeves.png";
 const Gallery = () => {
   const galleryItems = [{
     image: pumpImage,
@@ -23,9 +24,13 @@ const Gallery = () => {
     title: "Manufacturing Facility",
     category: "Infrastructure"
   }, {
-    image: pumpImage,
+    image: cylinderSleevesImage,
     title: "CNC Machined Components",
     category: "Manufacturing"
+  }, {
+    image: cylinderSleevesImage,
+    title: "SPS Cylinder Sleeves",
+    category: "Products"
   }, {
     image: cleaningImage,
     title: "Quality Testing",
