@@ -95,16 +95,14 @@ const Gallery = () => {
 
               <div className="max-w-4xl mx-auto">
                 <Card className="overflow-hidden">
-                  <div className="aspect-video bg-muted flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
-                        <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-accent border-b-[12px] border-b-transparent ml-1"></div>
-                      </div>
-                      <p className="text-muted-foreground">
-                        Video content showcasing our products and services
-                      </p>
-                    </div>
-                  </div>
+                  <video 
+                    className="w-full aspect-video"
+                    controls
+                    preload="metadata"
+                  >
+                    <source src="/path-to-your-video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </Card>
               </div>
             </div>
