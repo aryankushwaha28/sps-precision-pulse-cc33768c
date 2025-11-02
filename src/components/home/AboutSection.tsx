@@ -25,7 +25,7 @@ const AboutSection = () => {
               </p>
               <p>
                 Our manufacturing facility features in-house CNC machining capabilities, ensuring 
-                micron-level precision and ISO-certified quality standards across all product lines.
+                micron-level precision across all product lines.
               </p>
             </div>
 
@@ -36,11 +36,6 @@ const AboutSection = () => {
 
           {/* Right: Technical Specs */}
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-card p-6 border border-border">
-              <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
-              <h3 className="font-bold text-foreground mb-2">ISO Certified</h3>
-              <p className="text-sm text-muted-foreground">Manufacturing excellence</p>
-            </div>
             <div className="bg-card p-6 border border-border">
               <CheckCircle2 className="h-8 w-8 text-primary mb-4" />
               <h3 className="font-bold text-foreground mb-2">CNC Precision</h3>
