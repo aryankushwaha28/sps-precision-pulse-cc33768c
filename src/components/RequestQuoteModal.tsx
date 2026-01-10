@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import emailjs from "@emailjs/browser";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,6 +25,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Send, Loader2, CheckCircle2 } from "lucide-react";
+
+// EmailJS Configuration - Replace with your actual credentials
+const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -60,6 +66,7 @@ const RequestQuoteModal = ({ productName, trigger }: RequestQuoteModalProps) => 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
+      // Save to Supabase
       const { error } = await supabase.from("quote_requests").insert({
         name: data.name,
         company: data.company || null,
@@ -70,6 +77,22 @@ const RequestQuoteModal = ({ productName, trigger }: RequestQuoteModalProps) => 
       });
 
       if (error) throw error;
+
+      // Send email notification via EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          company: data.company || "Not provided",
+          phone: data.phone || "Not provided",
+          product_name: productName,
+          message: data.message || "No additional details provided",
+          to_email: "sps.bsk2011@gmail.com",
+        },
+        EMAILJS_PUBLIC_KEY
+      );
 
       setIsSuccess(true);
       form.reset();
