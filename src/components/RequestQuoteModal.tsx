@@ -26,10 +26,10 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Send, Loader2, CheckCircle2 } from "lucide-react";
 
-// EmailJS Configuration - Replace with your actual credentials
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = "service_bye4d9s";
+const EMAILJS_TEMPLATE_ID = "template_00lgiib";
+const EMAILJS_PUBLIC_KEY = "PijOFDzmbAluwxYkM";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
