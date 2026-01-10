@@ -1,13 +1,13 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import pumpImage from "@/assets/pump-product.jpg";
 import cleaningImage from "@/assets/cleaning-accessories.jpg";
 import customImage from "@/assets/custom-system.jpg";
 import heroImage from "@/assets/hero-industrial.jpg";
+import RequestQuoteModal from "@/components/RequestQuoteModal";
+import { Button } from "@/components/ui/button";
 const Products = () => {
   const products = [{
     title: "High Pressure Triplex Plunger Pumps",
@@ -88,9 +88,14 @@ const Products = () => {
                     </ul>
                   </div>
 
-                  <Button variant="default" size="lg" asChild>
-                    <Link to="/contact">Request a Quote</Link>
-                  </Button>
+                  <RequestQuoteModal 
+                    productName={product.title}
+                    trigger={
+                      <Button variant="default" size="lg">
+                        Request a Quote
+                      </Button>
+                    }
+                  />
                 </div>
               </div>)}
           </div>

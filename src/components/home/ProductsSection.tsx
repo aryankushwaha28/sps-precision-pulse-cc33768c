@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import pumpImage from "@/assets/pump-product.jpg";
 import cleaningImage from "@/assets/cleaning-accessories.jpg";
 import customImage from "@/assets/custom-system.jpg";
+import RequestQuoteModal from "@/components/RequestQuoteModal";
 
 interface ProductSpec {
   pressure?: string;
@@ -349,11 +350,9 @@ const ProductsSection = () => {
                         <ArrowRight className="h-3 w-3 ml-1 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
-                    <Link to="/contact" className="flex-1">
-                      <Button size="sm" className="w-full">
-                        Enquire
-                      </Button>
-                    </Link>
+                    <div className="flex-1">
+                      <RequestQuoteModal productName={product.title} />
+                    </div>
                   </div>
                 </div>
               </div>
