@@ -82,9 +82,10 @@ serve(async (req) => {
   try {
     const EMAILJS_SERVICE_ID = Deno.env.get('EMAILJS_SERVICE_ID');
     const EMAILJS_TEMPLATE_ID = Deno.env.get('EMAILJS_TEMPLATE_ID');
+    const EMAILJS_PUBLIC_KEY = Deno.env.get('EMAILJS_PUBLIC_KEY');
     const EMAILJS_PRIVATE_KEY = Deno.env.get('EMAILJS_PRIVATE_KEY');
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PRIVATE_KEY) {
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY || !EMAILJS_PRIVATE_KEY) {
       console.error('Missing EmailJS configuration');
       return new Response(
         JSON.stringify({ error: 'Email service not configured' }),
@@ -117,6 +118,7 @@ serve(async (req) => {
     console.log('Received quote email request for product:', sanitizedData.product_name);
 
     // Send email via EmailJS API with sanitized data and server-side recipient
+    // For server-side usage, use accessToken with the private key
     const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
       headers: {
@@ -125,7 +127,8 @@ serve(async (req) => {
       body: JSON.stringify({
         service_id: EMAILJS_SERVICE_ID,
         template_id: EMAILJS_TEMPLATE_ID,
-        user_id: EMAILJS_PRIVATE_KEY,
+        user_id: EMAILJS_PUBLIC_KEY,
+        accessToken: EMAILJS_PRIVATE_KEY,
         template_params: {
           from_name: sanitizedData.from_name,
           from_email: sanitizedData.from_email,
