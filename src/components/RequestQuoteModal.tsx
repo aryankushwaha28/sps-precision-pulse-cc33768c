@@ -77,11 +77,10 @@ const RequestQuoteModal = ({ productName, trigger }: RequestQuoteModalProps) => 
         body: {
           from_name: data.name,
           from_email: data.email,
-          company: data.company || "Not provided",
-          phone: data.phone || "Not provided",
+          company: data.company,
+          phone: data.phone,
           product_name: productName,
-          message: data.message || "No additional details provided",
-          to_email: "sps.bsk2011@gmail.com",
+          message: data.message,
         },
       });
 
