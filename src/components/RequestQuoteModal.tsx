@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import emailjs from "@emailjs/browser";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,11 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageCircle, Send, Loader2, CheckCircle2 } from "lucide-react";
-
-// EmailJS Configuration
-const EMAILJS_SERVICE_ID = "service_bye4d9s";
-const EMAILJS_TEMPLATE_ID = "template_00lgiib";
-const EMAILJS_PUBLIC_KEY = "PijOFDzmbAluwxYkM";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -78,11 +72,9 @@ const RequestQuoteModal = ({ productName, trigger }: RequestQuoteModalProps) => 
 
       if (error) throw error;
 
-      // Send email notification via EmailJS
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
+      // Send email notification via Edge Function (secure server-side)
+      const { error: emailError } = await supabase.functions.invoke('send-quote-email', {
+        body: {
           from_name: data.name,
           from_email: data.email,
           company: data.company || "Not provided",
@@ -91,8 +83,12 @@ const RequestQuoteModal = ({ productName, trigger }: RequestQuoteModalProps) => 
           message: data.message || "No additional details provided",
           to_email: "sps.bsk2011@gmail.com",
         },
-        EMAILJS_PUBLIC_KEY
-      );
+      });
+
+      if (emailError) {
+        console.error("Email notification failed:", emailError);
+        // Don't throw - the quote was saved, just email failed
+      }
 
       setIsSuccess(true);
       form.reset();
