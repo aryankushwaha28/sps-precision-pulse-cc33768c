@@ -1,4 +1,5 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -73,25 +74,24 @@ function validateAndSanitize(body: QuoteEmailRequest): {
   return { valid: true, data: sanitizedData };
 }
 
-serve(async (req) => {
+const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const EMAILJS_SERVICE_ID = Deno.env.get('EMAILJS_SERVICE_ID');
-    const EMAILJS_TEMPLATE_ID = Deno.env.get('EMAILJS_TEMPLATE_ID');
-    const EMAILJS_PUBLIC_KEY = Deno.env.get('EMAILJS_PUBLIC_KEY');
-    const EMAILJS_PRIVATE_KEY = Deno.env.get('EMAILJS_PRIVATE_KEY');
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
-    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY || !EMAILJS_PRIVATE_KEY) {
-      console.error('Missing EmailJS configuration');
+    if (!RESEND_API_KEY) {
+      console.error('Missing RESEND_API_KEY');
       return new Response(
         JSON.stringify({ error: 'Email service not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    const resend = new Resend(RESEND_API_KEY);
 
     // Parse request body
     let body: QuoteEmailRequest;
@@ -117,49 +117,40 @@ serve(async (req) => {
     const sanitizedData = validation.data;
     console.log('Received quote email request for product:', sanitizedData.product_name);
 
-    // Send email via EmailJS API with sanitized data and server-side recipient
-    // For server-side usage, use accessToken with the private key
-    const emailjsResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        service_id: EMAILJS_SERVICE_ID,
-        template_id: EMAILJS_TEMPLATE_ID,
-        user_id: EMAILJS_PUBLIC_KEY,
-        accessToken: EMAILJS_PRIVATE_KEY,
-        template_params: {
-          from_name: sanitizedData.from_name,
-          from_email: sanitizedData.from_email,
-          company: sanitizedData.company || 'Not provided',
-          phone: sanitizedData.phone || 'Not provided',
-          product_name: sanitizedData.product_name,
-          message: sanitizedData.message || 'No additional details provided',
-          to_email: TO_EMAIL,  // Use server-side constant, not client input
-        },
-      }),
+    // Send email via Resend API
+    const emailResponse = await resend.emails.send({
+      from: 'SPS Quote Request <onboarding@resend.dev>',
+      to: [TO_EMAIL],
+      replyTo: sanitizedData.from_email,
+      subject: `Quote Request: ${sanitizedData.product_name}`,
+      html: `
+        <h2>New Quote Request</h2>
+        <p><strong>Product:</strong> ${sanitizedData.product_name}</p>
+        <hr>
+        <h3>Customer Details</h3>
+        <p><strong>Name:</strong> ${sanitizedData.from_name}</p>
+        <p><strong>Email:</strong> ${sanitizedData.from_email}</p>
+        <p><strong>Company:</strong> ${sanitizedData.company || 'Not provided'}</p>
+        <p><strong>Phone:</strong> ${sanitizedData.phone || 'Not provided'}</p>
+        <hr>
+        <h3>Message</h3>
+        <p>${sanitizedData.message || 'No additional details provided'}</p>
+      `,
     });
 
-    if (!emailjsResponse.ok) {
-      const errorText = await emailjsResponse.text();
-      console.error('EmailJS API error:', errorText);
-      return new Response(
-        JSON.stringify({ error: 'Failed to send email' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    console.log('Email sent successfully:', emailResponse);
 
-    console.log('Email sent successfully for product:', sanitizedData.product_name);
     return new Response(
       JSON.stringify({ success: true, message: 'Email sent successfully' }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in send-quote-email function:', error);
     return new Response(
       JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
-});
+};
+
+serve(handler);
