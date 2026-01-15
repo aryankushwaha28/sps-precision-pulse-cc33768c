@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -91,8 +90,6 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const resend = new Resend(RESEND_API_KEY);
-
     // Parse request body
     let body: QuoteEmailRequest;
     try {
@@ -117,28 +114,45 @@ const handler = async (req: Request): Promise<Response> => {
     const sanitizedData = validation.data;
     console.log('Received quote email request for product:', sanitizedData.product_name);
 
-    // Send email via Resend API
-    const emailResponse = await resend.emails.send({
-      from: 'SPS Quote Request <onboarding@resend.dev>',
-      to: [TO_EMAIL],
-      replyTo: sanitizedData.from_email,
-      subject: `Quote Request: ${sanitizedData.product_name}`,
-      html: `
-        <h2>New Quote Request</h2>
-        <p><strong>Product:</strong> ${sanitizedData.product_name}</p>
-        <hr>
-        <h3>Customer Details</h3>
-        <p><strong>Name:</strong> ${sanitizedData.from_name}</p>
-        <p><strong>Email:</strong> ${sanitizedData.from_email}</p>
-        <p><strong>Company:</strong> ${sanitizedData.company || 'Not provided'}</p>
-        <p><strong>Phone:</strong> ${sanitizedData.phone || 'Not provided'}</p>
-        <hr>
-        <h3>Message</h3>
-        <p>${sanitizedData.message || 'No additional details provided'}</p>
-      `,
+    // Send email via Resend REST API
+    const emailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'SPS Quote Request <onboarding@resend.dev>',
+        to: [TO_EMAIL],
+        reply_to: sanitizedData.from_email,
+        subject: `Quote Request: ${sanitizedData.product_name}`,
+        html: `
+          <h2>New Quote Request</h2>
+          <p><strong>Product:</strong> ${sanitizedData.product_name}</p>
+          <hr>
+          <h3>Customer Details</h3>
+          <p><strong>Name:</strong> ${sanitizedData.from_name}</p>
+          <p><strong>Email:</strong> ${sanitizedData.from_email}</p>
+          <p><strong>Company:</strong> ${sanitizedData.company || 'Not provided'}</p>
+          <p><strong>Phone:</strong> ${sanitizedData.phone || 'Not provided'}</p>
+          <hr>
+          <h3>Message</h3>
+          <p>${sanitizedData.message || 'No additional details provided'}</p>
+        `,
+      }),
     });
 
-    console.log('Email sent successfully:', emailResponse);
+    if (!emailResponse.ok) {
+      const errorData = await emailResponse.json();
+      console.error('Resend API error:', errorData);
+      return new Response(
+        JSON.stringify({ error: 'Failed to send email', details: errorData }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const responseData = await emailResponse.json();
+    console.log('Email sent successfully:', responseData);
 
     return new Response(
       JSON.stringify({ success: true, message: 'Email sent successfully' }),
