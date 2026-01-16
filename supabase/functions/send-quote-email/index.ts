@@ -8,6 +8,13 @@ const corsHeaders = {
 // Server-side recipient - never trust client input for this
 const TO_EMAIL = 'sps.bsk2011@gmail.com';
 
+// Rate limiting configuration
+const RATE_LIMIT = {
+  perMinute: 2,    // Max 2 requests per minute per IP
+  perHour: 5,      // Max 5 requests per hour per IP
+  perDay: 15,      // Max 15 requests per day per IP
+};
+
 // Input length limits
 const FIELD_LIMITS = {
   from_name: 100,
@@ -73,6 +80,108 @@ function validateAndSanitize(body: QuoteEmailRequest): {
   return { valid: true, data: sanitizedData };
 }
 
+// Rate limiting check using Deno KV
+async function checkRateLimit(ip: string): Promise<{ allowed: boolean; retryAfter?: number }> {
+  try {
+    const kv = await Deno.openKv();
+    const now = Date.now();
+
+    // Check minute limit
+    const minuteKey = ['rate_limit', 'minute', ip];
+    const minuteData = await kv.get<{ count: number; resetAt: number }>(minuteKey);
+    
+    if (minuteData.value) {
+      if (now < minuteData.value.resetAt) {
+        if (minuteData.value.count >= RATE_LIMIT.perMinute) {
+          const retryAfter = Math.ceil((minuteData.value.resetAt - now) / 1000);
+          await kv.close();
+          return { allowed: false, retryAfter };
+        }
+      }
+    }
+
+    // Check hour limit
+    const hourKey = ['rate_limit', 'hour', ip];
+    const hourData = await kv.get<{ count: number; resetAt: number }>(hourKey);
+    
+    if (hourData.value) {
+      if (now < hourData.value.resetAt) {
+        if (hourData.value.count >= RATE_LIMIT.perHour) {
+          const retryAfter = Math.ceil((hourData.value.resetAt - now) / 1000);
+          await kv.close();
+          return { allowed: false, retryAfter };
+        }
+      }
+    }
+
+    // Check day limit
+    const dayKey = ['rate_limit', 'day', ip];
+    const dayData = await kv.get<{ count: number; resetAt: number }>(dayKey);
+    
+    if (dayData.value) {
+      if (now < dayData.value.resetAt) {
+        if (dayData.value.count >= RATE_LIMIT.perDay) {
+          const retryAfter = Math.ceil((dayData.value.resetAt - now) / 1000);
+          await kv.close();
+          return { allowed: false, retryAfter };
+        }
+      }
+    }
+
+    await kv.close();
+    return { allowed: true };
+  } catch (error) {
+    // If KV fails, allow the request but log the error
+    console.error('Rate limit check failed:', error);
+    return { allowed: true };
+  }
+}
+
+// Increment rate limit counters
+async function incrementRateLimitCounters(ip: string): Promise<void> {
+  try {
+    const kv = await Deno.openKv();
+    const now = Date.now();
+
+    // Increment minute counter
+    const minuteKey = ['rate_limit', 'minute', ip];
+    const minuteData = await kv.get<{ count: number; resetAt: number }>(minuteKey);
+    const minuteResetAt = now + 60000; // 1 minute
+    
+    if (minuteData.value && now < minuteData.value.resetAt) {
+      await kv.set(minuteKey, { count: minuteData.value.count + 1, resetAt: minuteData.value.resetAt });
+    } else {
+      await kv.set(minuteKey, { count: 1, resetAt: minuteResetAt });
+    }
+
+    // Increment hour counter
+    const hourKey = ['rate_limit', 'hour', ip];
+    const hourData = await kv.get<{ count: number; resetAt: number }>(hourKey);
+    const hourResetAt = now + 3600000; // 1 hour
+    
+    if (hourData.value && now < hourData.value.resetAt) {
+      await kv.set(hourKey, { count: hourData.value.count + 1, resetAt: hourData.value.resetAt });
+    } else {
+      await kv.set(hourKey, { count: 1, resetAt: hourResetAt });
+    }
+
+    // Increment day counter
+    const dayKey = ['rate_limit', 'day', ip];
+    const dayData = await kv.get<{ count: number; resetAt: number }>(dayKey);
+    const dayResetAt = now + 86400000; // 24 hours
+    
+    if (dayData.value && now < dayData.value.resetAt) {
+      await kv.set(dayKey, { count: dayData.value.count + 1, resetAt: dayData.value.resetAt });
+    } else {
+      await kv.set(dayKey, { count: 1, resetAt: dayResetAt });
+    }
+
+    await kv.close();
+  } catch (error) {
+    console.error('Failed to increment rate limit counters:', error);
+  }
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -80,6 +189,32 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Extract client IP for rate limiting
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+               req.headers.get('x-real-ip') || 
+               req.headers.get('cf-connecting-ip') || 
+               'unknown';
+
+    // Check rate limit
+    const rateLimitResult = await checkRateLimit(ip);
+    if (!rateLimitResult.allowed) {
+      console.warn(`Rate limit exceeded for IP: ${ip}`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Too many requests. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': String(rateLimitResult.retryAfter || 60)
+          } 
+        }
+      );
+    }
+
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
     if (!RESEND_API_KEY) {
@@ -146,10 +281,13 @@ const handler = async (req: Request): Promise<Response> => {
       const errorData = await emailResponse.json();
       console.error('Resend API error:', errorData);
       return new Response(
-        JSON.stringify({ error: 'Failed to send email', details: errorData }),
+        JSON.stringify({ error: 'Failed to send email' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Increment rate limit counters on successful email send
+    await incrementRateLimitCounters(ip);
 
     const responseData = await emailResponse.json();
     console.log('Email sent successfully:', responseData);
@@ -158,7 +296,7 @@ const handler = async (req: Request): Promise<Response> => {
       JSON.stringify({ success: true, message: 'Email sent successfully' }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in send-quote-email function:', error);
     return new Response(
       JSON.stringify({ error: 'Internal server error' }),
