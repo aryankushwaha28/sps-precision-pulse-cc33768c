@@ -1,9 +1,25 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+// Allowed origins for CORS - restrict to production domains
+const ALLOWED_ORIGINS = [
+  'https://id-preview--869fdebf-ca77-4e18-a559-e63436cc6a3c.lovable.app',
+  'https://869fdebf-ca77-4e18-a559-e63436cc6a3c.lovable.app',
+  // Add your custom domain here when configured
+];
+
+// Function to get CORS headers based on origin validation
+function getCorsHeaders(origin: string | null): Record<string, string> {
+  const isAllowed = origin && (
+    ALLOWED_ORIGINS.includes(origin) || 
+    origin.endsWith('.lovable.app')
+  );
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin! : 'null',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 // Server-side recipient - never trust client input for this
 const TO_EMAIL = 'sps.bsk2011@gmail.com';
@@ -34,14 +50,37 @@ interface QuoteEmailRequest {
   message?: string;
 }
 
-// Sanitize input: remove newlines/carriage returns (email header injection prevention)
-function sanitizeInput(str: string | undefined, maxLength: number): string {
+// HTML entity encoding for email safety
+function htmlEncode(str: string): string {
   if (!str) return '';
   return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// Sanitize input: remove newlines/carriage returns (email header injection prevention)
+// Then apply HTML encoding for safe email rendering
+function sanitizeInput(str: string | undefined, maxLength: number): string {
+  if (!str) return '';
+  const cleaned = str
     .replace(/[\r\n]/g, ' ')  // Remove newlines to prevent header injection
     .replace(/<[^>]*>/g, '')  // Remove HTML tags
     .trim()
     .substring(0, maxLength);  // Enforce length limit
+  return htmlEncode(cleaned);
+}
+
+// Sanitize email without HTML encoding (for reply_to header)
+function sanitizeEmail(str: string | undefined, maxLength: number): string {
+  if (!str) return '';
+  return str
+    .replace(/[\r\n]/g, '')  // Remove newlines to prevent header injection
+    .replace(/<[^>]*>/g, '')  // Remove HTML tags
+    .trim()
+    .substring(0, maxLength);
 }
 
 // Validate and sanitize all inputs
@@ -55,9 +94,9 @@ function validateAndSanitize(body: QuoteEmailRequest): {
     return { valid: false, error: 'Missing required fields: name, email, and product name are required' };
   }
 
-  // Validate email format
+  // Validate email format (use non-encoded email for validation)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const sanitizedEmail = sanitizeInput(body.from_email, FIELD_LIMITS.from_email);
+  const sanitizedEmail = sanitizeEmail(body.from_email, FIELD_LIMITS.from_email);
   if (!emailRegex.test(sanitizedEmail)) {
     return { valid: false, error: 'Invalid email format' };
   }
@@ -65,7 +104,7 @@ function validateAndSanitize(body: QuoteEmailRequest): {
   // Sanitize all fields with length limits
   const sanitizedData: QuoteEmailRequest = {
     from_name: sanitizeInput(body.from_name, FIELD_LIMITS.from_name),
-    from_email: sanitizedEmail,
+    from_email: sanitizedEmail, // Keep email without HTML encoding for reply_to
     company: sanitizeInput(body.company, FIELD_LIMITS.company),
     phone: sanitizeInput(body.phone, FIELD_LIMITS.phone),
     product_name: sanitizeInput(body.product_name, FIELD_LIMITS.product_name),
@@ -183,9 +222,26 @@ async function incrementRateLimitCounters(ip: string): Promise<void> {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  const origin = req.headers.get('origin');
+  const corsHeaders = getCorsHeaders(origin);
+
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // Validate origin for non-OPTIONS requests
+  const isAllowedOrigin = origin && (
+    ALLOWED_ORIGINS.includes(origin) || 
+    origin.endsWith('.lovable.app')
+  );
+  
+  if (!isAllowedOrigin) {
+    console.warn(`Rejected request from unauthorized origin: ${origin}`);
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized origin' }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
   try {
@@ -250,6 +306,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Received quote email request for product:', sanitizedData.product_name);
 
     // Send email via Resend REST API
+    // Note: sanitizedData fields are already HTML-encoded for safe email rendering
     const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -267,7 +324,7 @@ const handler = async (req: Request): Promise<Response> => {
           <hr>
           <h3>Customer Details</h3>
           <p><strong>Name:</strong> ${sanitizedData.from_name}</p>
-          <p><strong>Email:</strong> ${sanitizedData.from_email}</p>
+          <p><strong>Email:</strong> ${htmlEncode(sanitizedData.from_email)}</p>
           <p><strong>Company:</strong> ${sanitizedData.company || 'Not provided'}</p>
           <p><strong>Phone:</strong> ${sanitizedData.phone || 'Not provided'}</p>
           <hr>
