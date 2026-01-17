@@ -233,8 +233,9 @@ const handler = async (req: Request): Promise<Response> => {
 
   // Validate origin for non-OPTIONS requests
   const isAllowedOrigin = origin && (
-    ALLOWED_ORIGINS.includes(origin) || 
-    origin.endsWith('.lovable.app')
+    ALLOWED_ORIGINS.includes(origin) ||
+    origin.endsWith('.lovable.app') ||
+    origin.endsWith('.lovableproject.com')
   );
   
   if (!isAllowedOrigin) {
