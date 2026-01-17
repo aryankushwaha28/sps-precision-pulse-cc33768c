@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Form,
   FormControl,
@@ -43,18 +44,29 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Create WhatsApp message
-      const message = `*New Inquiry from Website*%0A%0A*Name:* ${encodeURIComponent(data.name)}%0A*Company:* ${encodeURIComponent(data.company || "N/A")}%0A*Email:* ${encodeURIComponent(data.email)}%0A*Phone:* ${encodeURIComponent(data.phone || "N/A")}%0A%0A*Message:*%0A${encodeURIComponent(data.message)}`;
+      // Send email notification via Edge Function (secure server-side)
+      const { error: emailError } = await supabase.functions.invoke('send-quote-email', {
+        body: {
+          from_name: data.name,
+          from_email: data.email,
+          company: data.company,
+          phone: data.phone,
+          product_name: "General Inquiry",
+          message: data.message,
+        },
+      });
+
+      if (emailError) {
+        throw emailError;
+      }
       
-      // Open WhatsApp with pre-filled message
-      window.open(`https://wa.me/919811112086?text=${message}`, '_blank');
-      
-      toast.success("Redirecting to WhatsApp...", {
-        description: "Please send the pre-filled message to complete your inquiry.",
+      toast.success("Inquiry submitted successfully!", {
+        description: "We'll get back to you within 24 hours.",
       });
       
       form.reset();
     } catch (error) {
+      console.error("Email error:", error);
       toast.error("Something went wrong", {
         description: "Please try again or contact us directly.",
       });
