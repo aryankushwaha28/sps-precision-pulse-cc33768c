@@ -65,8 +65,8 @@ const ProductsSection = () => {
       },
     },
     {
-      id: "sps-13000-3g",
-      title: "SPS-13000-3G Series",
+      id: "sps-13000",
+      title: "SPS-13000 Series",
       category: "Pump",
       description: "Ultra-high pressure system for specialized industrial applications",
       image: pumpImage,
