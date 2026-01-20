@@ -34,9 +34,9 @@ const Navigation = () => {
             <div className="h-10">
               <img src={logo} alt="SPS Logo" className="h-full w-auto object-contain" />
             </div>
-            <div className="hidden lg:block">
-              <div className="font-bold text-lg text-foreground">Saraswati Pumps & Systems</div>
-              <div className="text-[9px] text-muted-foreground my-[2px] py-0 px-[56px]">Engineering Reliability Since 2006</div>
+            <div className="flex flex-col">
+              <div className="font-bold text-sm sm:text-base lg:text-lg text-foreground leading-tight">Saraswati Pumps & Systems</div>
+              <div className="text-[8px] sm:text-[9px] text-muted-foreground">Engineering Reliability Since 2006</div>
             </div>
           </Link>
 
