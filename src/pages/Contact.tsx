@@ -135,13 +135,18 @@ const Contact = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <Card className="overflow-hidden">
-                <div className="aspect-video bg-muted flex items-center justify-center">
-                  <div className="text-center space-y-2">
-                    <MapPin className="h-16 w-16 text-muted-foreground mx-auto" />
-                    <p className="text-muted-foreground">
-                      Map Location - B.S.K., Uttar Pradesh, India
-                    </p>
-                  </div>
+                <div className="aspect-video">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112173.12876929726!2d77.7781048!3d28.4067036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c9e5f3a4c0ddd%3A0x8c8f7f8f8f8f8f8f!2sBulandshahr%2C%20Uttar%20Pradesh%2C%20India!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Saraswati Pumps & Systems Location"
+                    className="w-full h-full"
+                  />
                 </div>
               </Card>
             </div>
