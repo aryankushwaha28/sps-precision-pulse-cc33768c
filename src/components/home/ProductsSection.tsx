@@ -79,6 +79,20 @@ const ProductsSection = () => {
       },
     },
     {
+      id: "sps-15000",
+      title: "SPS-15000 Series",
+      category: "Pump",
+      description: "Ultra-high pressure pump for demanding heavy-duty industrial applications",
+      image: pumpImage,
+      specs: {
+        pressure: "0-1400 bar",
+        flow: "50-115 LPM",
+        power: "132 kW",
+        pressureBar: 1400,
+        flowLPM: 115,
+      },
+    },
+    {
       id: "custom-parts",
       title: "Custom CNC Parts",
       category: "Custom",
