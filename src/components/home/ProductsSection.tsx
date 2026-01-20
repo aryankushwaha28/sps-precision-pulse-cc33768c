@@ -72,7 +72,7 @@ const ProductsSection = () => {
       image: pumpImage,
       specs: {
         pressure: "0-1100 bar",
-        flow: "522 LPM",
+        flow: "33-215 LPM",
         power: "180 kW",
         pressureBar: 1800,
         flowLPM: 522,
