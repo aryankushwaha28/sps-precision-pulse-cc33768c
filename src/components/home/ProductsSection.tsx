@@ -71,7 +71,7 @@ const ProductsSection = () => {
       description: "Ultra-high pressure system for specialized industrial applications",
       image: pumpImage,
       specs: {
-        pressure: "1800 bar",
+        pressure: "0-1100 bar",
         flow: "522 LPM",
         power: "180 kW",
         pressureBar: 1800,
