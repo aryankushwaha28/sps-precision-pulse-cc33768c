@@ -66,7 +66,7 @@ const ProductsSection = () => {
     },
     {
       id: "sps-13000",
-      title: "SPS-13000 Series",
+      title: "SPS-13000 Series COOLING TYPE",
       category: "Pump",
       description: "Ultra-high pressure system for specialized industrial applications",
       image: pumpImage,
