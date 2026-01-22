@@ -90,7 +90,8 @@ const Contact = () => {
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">Location</h3>
                         <p className="text-muted-foreground">
-                          B.S.K., Uttar Pradesh, India
+                          352, Bonjha, Patel Marg,<br />
+                          Ghaziabad (U.P.) - 201001
                         </p>
                       </div>
                     </CardContent>
