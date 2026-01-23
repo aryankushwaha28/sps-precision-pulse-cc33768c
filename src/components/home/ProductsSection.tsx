@@ -31,8 +31,8 @@ interface Product {
 const ProductsSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedModel, setSelectedModel] = useState("all");
-  const [pressureRange, setPressureRange] = useState({ min: 0, max: 3500 });
-  const [flowRange, setFlowRange] = useState({ min: 0, max: 600 });
+  const [pressureRange, setPressureRange] = useState({ min: 0, max: 1400 });
+  const [flowRange, setFlowRange] = useState({ min: 24, max: 215 });
   const [showFilters, setShowFilters] = useState(false);
 
   const products: Product[] = [
@@ -170,13 +170,13 @@ const ProductsSection = () => {
   const clearFilters = () => {
     setSearchQuery("");
     setSelectedModel("all");
-    setPressureRange({ min: 0, max: 3500 });
-    setFlowRange({ min: 0, max: 600 });
+    setPressureRange({ min: 0, max: 1400 });
+    setFlowRange({ min: 24, max: 215 });
   };
 
   const hasActiveFilters = searchQuery !== "" || selectedModel !== "all" || 
-    pressureRange.min !== 0 || pressureRange.max !== 3500 ||
-    flowRange.min !== 0 || flowRange.max !== 600;
+    pressureRange.min !== 0 || pressureRange.max !== 1400 ||
+    flowRange.min !== 24 || flowRange.max !== 215;
 
   return (
     <section className="py-16 bg-background">
@@ -251,7 +251,7 @@ const ProductsSection = () => {
                     type="number"
                     placeholder="Max"
                     value={pressureRange.max || ""}
-                    onChange={(e) => setPressureRange({ ...pressureRange, max: Number(e.target.value) || 3500 })}
+                    onChange={(e) => setPressureRange({ ...pressureRange, max: Number(e.target.value) || 1400 })}
                     className="w-24"
                   />
                 </div>
@@ -267,7 +267,7 @@ const ProductsSection = () => {
                     type="number"
                     placeholder="Min"
                     value={flowRange.min || ""}
-                    onChange={(e) => setFlowRange({ ...flowRange, min: Number(e.target.value) || 0 })}
+                    onChange={(e) => setFlowRange({ ...flowRange, min: Number(e.target.value) || 24 })}
                     className="w-24"
                   />
                   <span className="text-muted-foreground">-</span>
@@ -275,7 +275,7 @@ const ProductsSection = () => {
                     type="number"
                     placeholder="Max"
                     value={flowRange.max || ""}
-                    onChange={(e) => setFlowRange({ ...flowRange, max: Number(e.target.value) || 600 })}
+                    onChange={(e) => setFlowRange({ ...flowRange, max: Number(e.target.value) || 215 })}
                     className="w-24"
                   />
                 </div>
