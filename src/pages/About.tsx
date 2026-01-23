@@ -10,6 +10,9 @@ import jkPaper from "@/assets/clients/jk-paper.jpg";
 import shreeCement from "@/assets/clients/shree-cement.jpg";
 import ultratech from "@/assets/clients/ultratech.jpg";
 import jsw from "@/assets/clients/jsw.jpg";
+import sunflagSteel from "@/assets/clients/sunflag-steel.jpg";
+import kalyaniSteels from "@/assets/clients/kalyani-steels.jpg";
+import tataSteel from "@/assets/clients/tata-steel.jpg";
 const About = () => {
   const values = [{
     icon: Target,
@@ -131,13 +134,16 @@ const About = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
                 {[
                   { src: jkCement, alt: "JK Cement" },
                   { src: jkPaper, alt: "JK Paper Ltd" },
                   { src: shreeCement, alt: "Shree Cement" },
                   { src: ultratech, alt: "UltraTech Cement" },
                   { src: jsw, alt: "JSW" },
+                  { src: sunflagSteel, alt: "Sunflag Steel" },
+                  { src: kalyaniSteels, alt: "Kalyani Steels" },
+                  { src: tataSteel, alt: "Tata Steel" },
                 ].map((client, index) => (
                   <div 
                     key={index} 
