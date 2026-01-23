@@ -3,6 +3,13 @@ import Footer from "@/components/Footer";
 import { CheckCircle2, Target, Eye, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import heroImage from "@/assets/hero-industrial.jpg";
+
+// Client logos
+import jkCement from "@/assets/clients/jk-cement.jpg";
+import jkPaper from "@/assets/clients/jk-paper.jpg";
+import shreeCement from "@/assets/clients/shree-cement.jpg";
+import ultratech from "@/assets/clients/ultratech.jpg";
+import jsw from "@/assets/clients/jsw.jpg";
 const About = () => {
   const values = [{
     icon: Target,
@@ -107,6 +114,42 @@ const About = () => {
                     <CheckCircle2 className="h-6 w-6 text-accent flex-shrink-0 mt-0.5" />
                     <span className="text-foreground font-medium">{item}</span>
                   </div>)}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trusted Clients */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto space-y-12">
+              <div className="text-center space-y-4">
+                <h2 className="text-4xl font-bold text-foreground">Trusted By Industry Leaders</h2>
+                <div className="w-20 h-1 bg-accent mx-auto"></div>
+                <p className="text-lg text-muted-foreground">
+                  Partnering with India's leading companies across multiple industries
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+                {[
+                  { src: jkCement, alt: "JK Cement" },
+                  { src: jkPaper, alt: "JK Paper Ltd" },
+                  { src: shreeCement, alt: "Shree Cement" },
+                  { src: ultratech, alt: "UltraTech Cement" },
+                  { src: jsw, alt: "JSW" },
+                ].map((client, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-card border border-border rounded-lg p-6 flex items-center justify-center hover:shadow-card transition-all duration-300"
+                  >
+                    <img 
+                      src={client.src} 
+                      alt={client.alt} 
+                      className="max-h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
