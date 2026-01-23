@@ -93,6 +93,19 @@ const ProductsSection = () => {
       },
     },
     {
+      id: "custom-pump",
+      title: "Custom Pumping Solution",
+      category: "Custom",
+      description: "Tell us your exact pressure and flow requirements - we'll engineer a pump system tailored to your application",
+      image: customImage,
+      features: [
+        "Specify your pressure (up to 1500 bar)",
+        "Define your flow rate requirements",
+        "Engineered for your application",
+        "Expert consultation included",
+      ],
+    },
+    {
       id: "custom-parts",
       title: "Custom CNC Parts",
       category: "Custom",
