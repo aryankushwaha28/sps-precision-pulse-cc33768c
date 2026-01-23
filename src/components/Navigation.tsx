@@ -35,7 +35,7 @@ const Navigation = () => {
               <img src={logo} alt="SPS Logo" className="h-full w-auto object-contain" />
             </div>
             <div className="flex flex-col">
-              <div className="font-bold text-sm sm:text-base lg:text-lg text-foreground leading-tight">Saraswati Pumps & Systems</div>
+              <div className="font-bold text-sm sm:text-base lg:text-lg text-foreground leading-tight my-[2px]">Saraswati Pumps & Systems</div>
               <div className="text-[8px] sm:text-[9px] text-muted-foreground">Engineering Reliability Since 2006</div>
             </div>
           </Link>
