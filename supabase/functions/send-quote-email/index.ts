@@ -1,9 +1,13 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-// Allowed origins for CORS - restrict to production domains
+// Allowed origins for CORS - includes localhost for development
 const ALLOWED_ORIGINS = [
   'https://id-preview--869fdebf-ca77-4e18-a559-e63436cc6a3c.lovable.app',
   'https://869fdebf-ca77-4e18-a559-e63436cc6a3c.lovable.app',
+  'https://sps-precision-pulse.lovable.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:8080',
   // Add your custom domain here when configured
 ];
 
@@ -12,7 +16,8 @@ function getCorsHeaders(origin: string | null): Record<string, string> {
   const isAllowed = origin && (
     ALLOWED_ORIGINS.includes(origin) || 
     origin.endsWith('.lovable.app') ||
-    origin.endsWith('.lovableproject.com')
+    origin.endsWith('.lovableproject.com') ||
+    origin.startsWith('http://localhost:')
   );
   
   return {
@@ -235,7 +240,8 @@ const handler = async (req: Request): Promise<Response> => {
   const isAllowedOrigin = origin && (
     ALLOWED_ORIGINS.includes(origin) ||
     origin.endsWith('.lovable.app') ||
-    origin.endsWith('.lovableproject.com')
+    origin.endsWith('.lovableproject.com') ||
+    origin.startsWith('http://localhost:')
   );
   
   if (!isAllowedOrigin) {
